@@ -74,7 +74,7 @@ async function getWikipediaExtractWithImage(wikipediaTitle) {
         const cleanFilename = filenameWithSize.replace(/^\d+px-/, '');
         
         // Query the File page for image metadata
-        const imageInfoUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=File:${encodeURIComponent(cleanFilename)}&prop=imageinfo&iiprop=extmetadata&format=json&origin=*`;
+        const imageInfoUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=File:${encodeURIComponent(cleanFilename)}&prop=imageinfo&iiprop=extmetadata|comment&format=json&origin=*`;
         
         const imageResponse = await fetch(imageInfoUrl, {
           headers: {
@@ -88,15 +88,40 @@ async function getWikipediaExtractWithImage(wikipediaTitle) {
           if (imagePages) {
             const imgPageId = Object.keys(imagePages)[0];
             const imgPage = imagePages[imgPageId];
-            if (imgPage?.imageinfo?.[0]?.extmetadata?.['ImageDescription']?.value) {
-              // Remove HTML tags and decode entities from caption
-              imageCaption = imgPage.imageinfo[0].extmetadata['ImageDescription'].value
+            const imageInfo = imgPage?.imageinfo?.[0];
+            
+            // Try ImageDescription first
+            if (imageInfo?.extmetadata?.['ImageDescription']?.value) {
+              imageCaption = imageInfo.extmetadata['ImageDescription'].value;
+            }
+            // Fallback to ObjectName if ImageDescription not available
+            else if (imageInfo?.extmetadata?.['ObjectName']?.value) {
+              imageCaption = imageInfo.extmetadata['ObjectName'].value;
+            }
+            // Fallback to comment if available
+            else if (imageInfo?.comment) {
+              imageCaption = imageInfo.comment;
+            }
+            
+            // Clean up the caption
+            if (imageCaption) {
+              imageCaption = imageCaption
                 .replace(/<[^>]*>/g, '')
                 .replace(/&quot;/g, '"')
                 .replace(/&#39;/g, "'")
                 .replace(/&amp;/g, '&')
                 .replace(/&lt;/g, '<')
                 .replace(/&gt;/g, '>')
+                // Remove "uploaded" dates and related text
+                .replace(/uploaded\s+on\s+\d{1,2}\s+\w+\s+\d{4}/gi, '')
+                .replace(/uploaded\s+\d{1,2}\s+\w+\s+\d{4}/gi, '')
+                .replace(/uploaded:\s*\d{4}-\d{2}-\d{2}/gi, '')
+                .replace(/uploaded\s+\d{4}-\d{2}-\d{2}/gi, '')
+                .replace(/\(uploaded\s+[^)]+\)/gi, '')
+                .replace(/\[uploaded[^\]]+\]/gi, '')
+                .replace(/uploaded\s+by\s+[^,]+/gi, '')
+                .replace(/uploaded\s+at\s+\d{2}:\d{2}/gi, '')
+                .replace(/\s+/g, ' ') // Normalize whitespace
                 .trim();
             }
           }

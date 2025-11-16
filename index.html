@@ -3,14 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Myths</title>
+  <title>MYTHS ARE THE PUBLIC DREAM.</title>
   <meta http-equiv="refresh" content="0; url=myths.html">
   <link rel="stylesheet" href="styles.css">
-</head>
-<body>
   <script>
+    // Scrolling title text
+    const titleText = "MYTHS ARE THE PUBLIC DREAM. ";
+    let titleIndex = 0;
+    function scrollTitle() {
+      document.title = titleText.substring(titleIndex) + titleText.substring(0, titleIndex);
+      titleIndex = (titleIndex + 1) % titleText.length;
+    }
+    setInterval(scrollTitle, 200);
     window.location.href = 'myths.html';
   </script>
+</head>
+<body>
 
   <footer class="site-footer">
     <p>

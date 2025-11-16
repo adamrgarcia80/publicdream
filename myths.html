@@ -3,8 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Myths</title>
+  <title>MYTHS ARE THE PUBLIC DREAM.</title>
   <link rel="stylesheet" href="styles.css">
+  <script>
+    // Scrolling title text
+    const titleText = "MYTHS ARE THE PUBLIC DREAM. ";
+    let titleIndex = 0;
+    function scrollTitle() {
+      document.title = titleText.substring(titleIndex) + titleText.substring(0, titleIndex);
+      titleIndex = (titleIndex + 1) % titleText.length;
+    }
+    setInterval(scrollTitle, 200);
+  </script>
 </head>
 <body>
   <main class="container">
@@ -172,12 +182,6 @@
         return matchesCulture && matchesType;
       });
 
-      // Set body background based on type filter
-      if (selectedType) {
-        document.body.setAttribute('data-type', selectedType);
-      } else {
-        document.body.removeAttribute('data-type');
-      }
 
       renderMyths();
     }
@@ -233,10 +237,6 @@
     // Initial render
     filterMyths();
     
-    // Set initial type background if URL param exists
-    if (selectedType) {
-      document.body.setAttribute('data-type', selectedType);
-    }
   </script>
 </body>
 </html>

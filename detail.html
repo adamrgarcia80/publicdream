@@ -3,8 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Myth Detail</title>
+  <title>MYTHS ARE THE PUBLIC DREAM.</title>
   <link rel="stylesheet" href="styles.css">
+  <script>
+    // Scrolling title text
+    const titleText = "MYTHS ARE THE PUBLIC DREAM. ";
+    let titleIndex = 0;
+    function scrollTitle() {
+      document.title = titleText.substring(titleIndex) + titleText.substring(0, titleIndex);
+      titleIndex = (titleIndex + 1) % titleText.length;
+    }
+    setInterval(scrollTitle, 200);
+  </script>
 </head>
 <body>
   <main class="container">
@@ -79,9 +89,7 @@
             <a href="${wikipediaUrl}" target="_blank" rel="noopener noreferrer">
               <img src="${imageUrl}" alt="${myth.title}" class="myth-image">
             </a>
-            ${imageCaption ? `
-              <p class="myth-image-caption">${imageCaption}</p>
-            ` : ''}
+            <p class="myth-image-caption">${imageCaption || `Image from the Wikipedia article on ${myth.wikipediaTitle}`}</p>
           ` : ''}
         </section>
 
@@ -142,10 +150,6 @@
         }
       });
 
-      // Set body background based on myth type
-      if (myth.type) {
-        document.body.setAttribute('data-type', myth.type);
-      }
 
       // Render immediately with myth data (don't wait for Wikipedia)
       renderMyth(myth, null, null, null);
