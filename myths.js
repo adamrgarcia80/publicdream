@@ -198,6 +198,17 @@ const myths = [
     themes: ['Ymir', 'giant\'s body', 'world tree', 'Yggdrasil', 'primeval beings'],
   },
   {
+    id: '45',
+    slug: 'norse-anthropogony',
+    title: 'Ask and Embla',
+    culture: 'Norse',
+    type: 'anthropogony',
+    wikipediaTitle: 'Ask and Embla',
+    era: 'Viking Age',
+    summary: 'Walking along a beach, the three gods Odin, Hœnir, and Lóðurr (or Vili, Vé, and Odin) find two trees—an ash and an elm. They transform these trees into the first humans: Ask (ash tree, the man) and Embla (the woman). The gods bestow upon them breath of life, movement and intelligence, shape, speech, hearing, and sight. Ask and Embla become the progenitors of all humanity and are given a home within the walls of Midgard, the realm of humans.',
+    themes: ['trees', 'first humans', 'divine gifts', 'Midgard', 'progenitors'],
+  },
+  {
     id: '19',
     slug: 'hindu-cosmogony',
     title: 'Hindu Cosmogony',

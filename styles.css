@@ -263,11 +263,59 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   border-radius: 0;
   position: relative;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dropdown-toggle:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: #000000;
+  color: inherit;
+  border-color: inherit;
+}
+
+body[data-type="cosmogony"] .dropdown-toggle:hover {
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .dropdown-toggle:hover {
+  color: #d4b896;
+  border-color: #d4b896;
+}
+
+body[data-type="eschatology"] .dropdown-toggle:hover {
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+body[data-type="underworld"] .dropdown-toggle:hover {
+  color: #888888;
+  border-color: #888888;
+}
+
+body:not([data-type]) .dropdown-toggle:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+body[data-type="cosmogony"] .dropdown.open .dropdown-toggle {
+  border-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .dropdown.open .dropdown-toggle {
+  border-color: #d4b896;
+}
+
+body[data-type="eschatology"] .dropdown.open .dropdown-toggle {
+  border-color: #ff0000;
+}
+
+body[data-type="underworld"] .dropdown.open .dropdown-toggle {
+  border-color: #888888;
+}
+
+body:not([data-type]) .dropdown.open .dropdown-toggle {
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .dropdown-toggle::after {
@@ -280,9 +328,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dropdown.open .dropdown-toggle {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: #000000;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #000000;
+  color: inherit;
+  border-color: inherit;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body[data-type="cosmogony"] .dropdown.open .dropdown-toggle {
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .dropdown.open .dropdown-toggle {
+  color: #d4b896;
+  border-color: #d4b896;
+}
+
+body[data-type="eschatology"] .dropdown.open .dropdown-toggle {
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+body[data-type="underworld"] .dropdown.open .dropdown-toggle {
+  color: #888888;
+  border-color: #888888;
 }
 
 .dropdown-menu {
@@ -379,13 +448,64 @@ body[data-type="underworld"] .dropdown-item:hover {
   background-color: inherit;
   border: 1px solid #000000;
   cursor: pointer;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
   text-decoration: none;
 }
 
 .myth-card:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: #000000;
+  border-color: inherit;
+}
+
+.myth-card:hover * {
+  color: inherit;
+  border-color: inherit;
+}
+
+body[data-type="cosmogony"] .myth-card:hover {
+  border-color: #ffff00;
+}
+
+body[data-type="cosmogony"] .myth-card:hover * {
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .myth-card:hover {
+  border-color: #d4b896;
+}
+
+body[data-type="anthropogony"] .myth-card:hover * {
+  color: #d4b896;
+  border-color: #d4b896;
+}
+
+body[data-type="eschatology"] .myth-card:hover {
+  border-color: #ff0000;
+}
+
+body[data-type="eschatology"] .myth-card:hover * {
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+body[data-type="underworld"] .myth-card:hover {
+  border-color: #888888;
+}
+
+body[data-type="underworld"] .myth-card:hover * {
+  color: #888888;
+  border-color: #888888;
+}
+
+body:not([data-type]) .myth-card:hover {
+  border-color: #ffffff;
+}
+
+body:not([data-type]) .myth-card:hover * {
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .myth-card-title {
@@ -393,13 +513,7 @@ body[data-type="underworld"] .dropdown-item:hover {
   font-weight: 700;
   color: #000000;
   margin-bottom: 0.5rem;
-  transition: text-decoration 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.myth-card:hover .myth-card-title {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .myth-meta {
@@ -417,6 +531,38 @@ body[data-type="underworld"] .dropdown-item:hover {
   padding: 0.25rem 0.5rem;
   border: 1px solid #000000;
   text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.myth-tag:hover {
+  background-color: #000000;
+  color: inherit;
+  border-color: inherit;
+}
+
+body[data-type="cosmogony"] .myth-tag:hover {
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .myth-tag:hover {
+  color: #d4b896;
+  border-color: #d4b896;
+}
+
+body[data-type="eschatology"] .myth-tag:hover {
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+body[data-type="underworld"] .myth-tag:hover {
+  color: #888888;
+  border-color: #888888;
+}
+
+body:not([data-type]) .myth-tag:hover {
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .myth-summary {
@@ -623,11 +769,62 @@ body[data-type="underworld"] .dropdown-item:hover {
   text-decoration: none;
   color: #000000;
   display: block;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .related-card:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: #000000;
+  border-color: inherit;
+}
+
+.related-card:hover * {
+  color: inherit;
+  border-color: inherit;
+}
+
+body[data-type="cosmogony"] .related-card:hover {
+  border-color: #ffff00;
+}
+
+body[data-type="cosmogony"] .related-card:hover * {
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .related-card:hover {
+  border-color: #d4b896;
+}
+
+body[data-type="anthropogony"] .related-card:hover * {
+  color: #d4b896;
+  border-color: #d4b896;
+}
+
+body[data-type="eschatology"] .related-card:hover {
+  border-color: #ff0000;
+}
+
+body[data-type="eschatology"] .related-card:hover * {
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+body[data-type="underworld"] .related-card:hover {
+  border-color: #888888;
+}
+
+body[data-type="underworld"] .related-card:hover * {
+  color: #888888;
+  border-color: #888888;
+}
+
+body:not([data-type]) .related-card:hover {
+  border-color: #ffffff;
+}
+
+body:not([data-type]) .related-card:hover * {
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .related-card-title {
@@ -635,13 +832,7 @@ body[data-type="underworld"] .dropdown-item:hover {
   font-weight: 700;
   color: #000000;
   margin-bottom: 0.25rem;
-  transition: text-decoration 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.related-card:hover .related-card-title {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .related-card-meta {
@@ -747,11 +938,38 @@ body[data-type="underworld"] .dropdown-item:hover {
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .symbol-map-link:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: #000000;
+  color: inherit;
+  border-color: inherit;
+}
+
+body[data-type="cosmogony"] .symbol-map-link:hover {
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .symbol-map-link:hover {
+  color: #d4b896;
+  border-color: #d4b896;
+}
+
+body[data-type="eschatology"] .symbol-map-link:hover {
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+body[data-type="underworld"] .symbol-map-link:hover {
+  color: #888888;
+  border-color: #888888;
+}
+
+body:not([data-type]) .symbol-map-link:hover {
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 /* Symbol Map Page Styles */
