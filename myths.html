@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myths</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <div class="key-sentence">Public Dream is an explorable database of <a href="?type=cosmogony" class="body-link">cosmogonies</a>, <a href="?type=anthropogony" class="body-link">anthropogonies</a>, <a href="?type=eschatology" class="body-link">eschatologies</a>, and <a href="?type=underworld" class="body-link">underworlds</a> across cultures.</div>
+    
+    </header>
+
+    <section class="sections-description">
+      <p><strong>Cosmogonies</strong> describe how the world begins. <strong>Anthropogonies</strong> tell how humans arrive. 
+    <strong>Eschatologies</strong> imagine how everything ends. <strong>Underworlds</strong> map where the dead go and how the living get there.</p>
+     
+    <p></p>
+    <p></p>
+
+    </section>
+
+    <div class="filters">
+      <div class="filter-group" style="min-width: 12rem;">
+        <label for="culture" class="filter-label">Culture</label>
+        <div class="dropdown" id="cultureDropdown">
+          <button type="button" class="dropdown-toggle" id="cultureToggle">All Cultures</button>
+          <div class="dropdown-menu" id="cultureMenu"></div>
+        </div>
+      </div>
+
+      <div class="filter-group" style="min-width: 12rem;">
+        <label for="type" class="filter-label">Type</label>
+        <div class="dropdown" id="typeDropdown">
+          <button type="button" class="dropdown-toggle" id="typeToggle">All Types</button>
+          <div class="dropdown-menu" id="typeMenu">
+            <!-- Type options will be wired via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="myths-grid" id="mythsGrid">
+      <!-- Myths will be rendered here -->
+    </div>
+
+    <div id="emptyState" class="empty-state" style="display: none;">
+      No myths found matching your filters.
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      PUBLIC DREAM is a project by
+      <a href="https://adamrgarcia.studio" target="_blank" rel="noopener noreferrer" class="body-link">Adam R Garcia</a>.
+      All information and imagery pulled from Wikipedia, which means it's probably not all correct, but a good place to think
+      about how we create myths through time, and how they create us in return. "Myth is the public dream and dream is the private myth." —Joseph Campbell
+    </p>
+  </footer>
+
+  <script src="myths.js"></script>
+  <script>
+    let filteredMyths = [...myths];
+    const cultures = [...new Set(myths.map(m => m.culture))].sort();
+
+    // State for current filters
+    let selectedCulture = '';
+    let selectedType = '';
+
+    // Check for URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const cultureParam = params.get('culture');
+    const typeParam = params.get('type');
+    if (cultureParam) {
+      selectedCulture = cultureParam;
+    }
+    if (typeParam) {
+      selectedType = typeParam;
+    }
+
+    // Populate culture dropdown
+    const cultureMenu = document.getElementById('cultureMenu');
+    const cultureToggle = document.getElementById('cultureToggle');
+
+    function setCulture(value, label) {
+      selectedCulture = value;
+      cultureToggle.textContent = label;
+      filterMyths();
+    }
+
+    // "All Cultures" option
+    const allCulturesItem = document.createElement('button');
+    allCulturesItem.type = 'button';
+    allCulturesItem.className = 'dropdown-item';
+    allCulturesItem.textContent = 'All Cultures';
+    allCulturesItem.onclick = () => setCulture('', 'All Cultures');
+    cultureMenu.appendChild(allCulturesItem);
+
+    cultures.forEach(culture => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dropdown-item';
+      btn.textContent = culture;
+      btn.onclick = () => setCulture(culture, culture);
+      cultureMenu.appendChild(btn);
+    });
+
+    // Populate type dropdown
+    const typeMenu = document.getElementById('typeMenu');
+    const typeToggle = document.getElementById('typeToggle');
+
+    function setType(value, label) {
+      selectedType = value;
+      typeToggle.textContent = label;
+      filterMyths();
+    }
+
+    const typeOptions = [
+      { value: '', label: 'All Types' },
+      { value: 'cosmogony', label: 'Cosmogony' },
+      { value: 'anthropogony', label: 'Anthropogony' },
+      { value: 'eschatology', label: 'Eschatology' },
+      { value: 'underworld', label: 'Underworld' },
+    ];
+
+    typeOptions.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dropdown-item';
+      btn.textContent = opt.label;
+      btn.onclick = () => setType(opt.value, opt.label);
+      typeMenu.appendChild(btn);
+    });
+
+    // Initialize type label if param present
+    if (selectedType) {
+      const match = typeOptions.find(o => o.value === selectedType);
+      if (match) {
+        typeToggle.textContent = match.label;
+      }
+    }
+
+    // Dropdown open/close handlers
+    function setupDropdown(dropdownId, toggleId) {
+      const dropdown = document.getElementById(dropdownId);
+      const toggle = document.getElementById(toggleId);
+
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('open');
+      });
+
+      document.addEventListener('click', () => {
+        dropdown.classList.remove('open');
+      });
+    }
+
+    setupDropdown('cultureDropdown', 'cultureToggle');
+    setupDropdown('typeDropdown', 'typeToggle');
+
+    // Initialize culture label if param present
+    if (selectedCulture) {
+      cultureToggle.textContent = selectedCulture;
+    }
+
+    function filterMyths() {
+      filteredMyths = myths.filter(myth => {
+        const matchesCulture = selectedCulture === '' || myth.culture === selectedCulture;
+        const matchesType = selectedType === '' || myth.type === selectedType;
+
+        return matchesCulture && matchesType;
+      });
+
+      renderMyths();
+    }
+
+    function renderMyths() {
+      const grid = document.getElementById('mythsGrid');
+      const emptyState = document.getElementById('emptyState');
+
+      if (filteredMyths.length === 0) {
+        grid.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      emptyState.style.display = 'none';
+
+      grid.innerHTML = filteredMyths.map(myth => `
+        <div class="myth-card" onclick="window.location.href='detail.html?slug=${myth.slug}'">
+          <h2 class="myth-card-title">${myth.title}</h2>
+          <div class="myth-meta">
+            <button class="myth-tag myth-tag-button" data-culture="${myth.culture}">${myth.culture}</button>
+            <button class="myth-tag myth-tag-button" data-type="${myth.type}">${myth.type}</button>
+          </div>
+          <p class="myth-summary">${myth.summary}</p>
+          ${myth.themes.length > 0 ? `
+            <div class="myth-themes">
+              ${myth.themes.slice(0, 3).map(theme => `
+                <span class="myth-theme">${theme}</span>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Make metadata tags clickable for cross-filtering
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target.classList && target.classList.contains('myth-tag-button')) {
+        if (target.dataset.culture) {
+          setCulture(target.dataset.culture, target.dataset.culture);
+        }
+        if (target.dataset.type) {
+          const opt = typeOptions.find(o => o.value === target.dataset.type);
+          if (opt) {
+            setType(opt.value, opt.label);
+          }
+        }
+      }
+    });
+
+    // Initial render
+    filterMyths();
+  </script>
+</body>
+</html>
+
