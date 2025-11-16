@@ -13,17 +13,34 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ff0000;
+  background-color: #ffffff;
   color: #000000;
   line-height: 1.4;
   text-align: left;
   transition: background-color 0.8s ease;
 }
 
+/* Type-specific background colors */
+body[data-type="cosmogony"] {
+  background-color: #ffff00;
+}
+
+body[data-type="anthropogony"] {
+  background-color: #d4b896;
+}
+
+body[data-type="eschatology"] {
+  background-color: #ff0000;
+}
+
+body[data-type="underworld"] {
+  background-color: #888888;
+}
+
 
 /* Global select styling to override native gray appearance */
 select {
-  background-color: #ff0000 !important;
+  background-color: inherit !important;
   border: 2px solid #000000 !important;
   color: #000000 !important;
   font-family: 'Space Grotesk', sans-serif !important;
@@ -115,7 +132,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   max-width: 600px;
   padding: 3rem 2rem;
-  background: #ff0000;
+  background: inherit;
   border: 2px solid #000000;
   color: #000000;
   font-family: 'Space Grotesk', sans-serif;
@@ -131,7 +148,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .landing-button:hover {
   background: #000000;
-  color: #ff0000;
+  color: inherit;
 }
 
 @media (max-width: 768px) {
@@ -150,7 +167,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .button {
   padding: 1rem 2rem;
-  background: #ff0000;
+  background: inherit;
   border: 1px solid #000000;
   color: #000000;
   font-family: 'Space Grotesk', sans-serif;
@@ -173,7 +190,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .button:hover {
   background: #000000;
-  color: #ff0000;
+  color: inherit;
 }
 
 /* Container */
@@ -236,7 +253,7 @@ h1, h2, h3, h4, h5, h6 {
 .dropdown-toggle {
   width: 100%;
   padding: 1rem 2.5rem 1rem 1rem;
-  background-color: #ff0000;
+  background-color: inherit;
   border: 2px solid #000000;
   color: #000000;
   font-family: 'Space Grotesk', sans-serif;
@@ -246,6 +263,11 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   border-radius: 0;
   position: relative;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-toggle::after {
@@ -258,8 +280,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dropdown.open .dropdown-toggle {
-  background-color: #000000;
-  color: #ff0000;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000000;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dropdown-menu {
@@ -267,11 +290,27 @@ h1, h2, h3, h4, h5, h6 {
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: #ff0000;
+  background-color: #ffffff;
   border: 2px solid #000000;
   border-top: none;
   z-index: 20;
   display: none;
+}
+
+body[data-type="cosmogony"] .dropdown-menu {
+  background-color: #ffff00;
+}
+
+body[data-type="anthropogony"] .dropdown-menu {
+  background-color: #d4b896;
+}
+
+body[data-type="eschatology"] .dropdown-menu {
+  background-color: #ff0000;
+}
+
+body[data-type="underworld"] .dropdown-menu {
+  background-color: #888888;
 }
 
 .dropdown.open .dropdown-menu {
@@ -281,7 +320,7 @@ h1, h2, h3, h4, h5, h6 {
 .dropdown-item {
   width: 100%;
   padding: 0.75rem 1rem;
-  background-color: #ff0000;
+  background-color: transparent;
   border: none;
   border-bottom: 1px solid #000000;
   color: #000000;
@@ -297,7 +336,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .dropdown-item:hover {
   background-color: #000000;
+  color: #ffffff;
+}
+
+body[data-type="cosmogony"] .dropdown-item:hover {
+  color: #ffff00;
+}
+
+body[data-type="anthropogony"] .dropdown-item:hover {
+  color: #d4b896;
+}
+
+body[data-type="eschatology"] .dropdown-item:hover {
   color: #ff0000;
+}
+
+body[data-type="underworld"] .dropdown-item:hover {
+  color: #888888;
 }
 
 /* Myths Grid */
@@ -321,17 +376,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .myth-card {
   padding: 1.5rem;
-  background-color: #ff0000;
+  background-color: inherit;
   border: 1px solid #000000;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
   text-decoration: none;
 }
 
 .myth-card:hover {
-  background-color: #000000;
-  color: #ff0000;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .myth-card-title {
@@ -339,11 +393,13 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: #000000;
   margin-bottom: 0.5rem;
-  transition: color 0.3s ease;
+  transition: text-decoration 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .myth-card:hover .myth-card-title {
-  color: #ff0000;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .myth-meta {
@@ -357,16 +413,10 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
   font-weight: 400;
   color: #000000;
-  background-color: #ff0000;
+  background-color: inherit;
   padding: 0.25rem 0.5rem;
   border: 1px solid #000000;
   text-decoration: none;
-}
-
-.myth-card:hover .myth-tag {
-  color: #ff0000;
-  background-color: #000000;
-  border-color: #ff0000;
 }
 
 .myth-summary {
@@ -382,9 +432,6 @@ h1, h2, h3, h4, h5, h6 {
   transition: color 0.3s ease;
 }
 
-.myth-card:hover .myth-summary {
-  color: #ff0000;
-}
 
 .myth-themes {
   padding-top: 1rem;
@@ -395,24 +442,14 @@ h1, h2, h3, h4, h5, h6 {
   transition: border-color 0.3s ease;
 }
 
-.myth-card:hover .myth-themes {
-  border-top-color: #ff0000;
-}
 
 .myth-theme {
   font-size: 1rem;
   font-weight: 400;
   color: #000000;
-  background-color: #ff0000;
+  background-color: inherit;
   padding: 0.125rem 0.5rem;
   border: 1px solid #000000;
-  transition: all 0.3s ease;
-}
-
-.myth-card:hover .myth-theme {
-  color: #ff0000;
-  background-color: #000000;
-  border-color: #ff0000;
 }
 
 /* Detail Page */
@@ -471,7 +508,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
   font-weight: 400;
   color: #000000;
-  background-color: #ff0000;
+  background-color: inherit;
   padding: 0.375rem 0.75rem;
   border: 1px solid #000000;
 }
@@ -492,7 +529,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
   font-weight: 400;
   color: #000000;
-  background-color: #ff0000;
+  background-color: inherit;
   padding: 0.25rem 0.5rem;
   border: 1px solid #000000;
   display: inline-block;
@@ -581,17 +618,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .related-card {
   padding: 1rem;
-  background-color: #ff0000;
+  background-color: inherit;
   border: 1px solid #000000;
   text-decoration: none;
   color: #000000;
   display: block;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .related-card:hover {
-  background-color: #000000;
-  color: #ff0000;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .related-card-title {
@@ -599,11 +635,13 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: #000000;
   margin-bottom: 0.25rem;
-  transition: color 0.3s ease;
+  transition: text-decoration 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .related-card:hover .related-card-title {
-  color: #ff0000;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .related-card-meta {
@@ -616,9 +654,6 @@ h1, h2, h3, h4, h5, h6 {
   transition: color 0.3s ease;
 }
 
-.related-card:hover .related-card-meta {
-  color: #ff0000;
-}
 
 .related-card-summary {
   font-size: 1rem;
@@ -631,9 +666,6 @@ h1, h2, h3, h4, h5, h6 {
   transition: color 0.3s ease;
 }
 
-.related-card:hover .related-card-summary {
-  color: #ff0000;
-}
 
 .source-section {
   margin-top: 3rem;
@@ -661,7 +693,7 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 100%;
   height: auto;
   border: 2px solid #000000;
-  background-color: #ff0000;
+  background-color: inherit;
 }
 
 .myth-image-caption {
@@ -692,4 +724,105 @@ h1, h2, h3, h4, h5, h6 {
   border-top: 1px solid #000000;
   margin-top: 3rem;
   font-size: 0.875rem;
+}
+
+.site-footer a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+.symbol-map-link {
+  display: inline-block;
+  margin-top: 2.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: inherit;
+  border: 2px solid #000000;
+  color: #000000;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.symbol-map-link:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Symbol Map Page Styles */
+.symbols-container {
+  margin-top: 2rem;
+}
+
+.symbols-list {
+  margin-top: 2rem;
+}
+
+.symbol-group {
+  margin-bottom: 3rem;
+}
+
+.symbol-group-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.symbol-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.symbol-item {
+  padding: 1rem;
+  background-color: inherit;
+  border: 1px solid #000000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.symbol-word {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000000;
+  text-transform: capitalize;
+}
+
+.symbol-myths {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000000;
+  line-height: 1.6;
+}
+
+.symbol-myth-link {
+  color: #000000;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.symbol-myth-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+@media (min-width: 768px) {
+  .symbol-item {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .symbol-word {
+    min-width: 150px;
+  }
 }
