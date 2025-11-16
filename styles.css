@@ -17,6 +17,57 @@ body {
   color: #000000;
   line-height: 1.4;
   text-align: left;
+  transition: background-color 0.8s ease;
+}
+
+/* Type-specific background colors */
+body[data-type="cosmogony"] {
+  background-color: #fff9d0;
+}
+
+body[data-type="anthropogony"] {
+  background-color: #d4b896;
+}
+
+body[data-type="eschatology"] {
+  background-color: #b3d9ff;
+}
+
+body[data-type="underworld"] {
+  background-color: #d3d3d3;
+}
+
+/* Type-specific button and tag colors */
+body[data-type="cosmogony"] .dropdown-toggle,
+body[data-type="cosmogony"] .dropdown-menu,
+body[data-type="cosmogony"] .dropdown-item,
+body[data-type="cosmogony"] .myth-tag,
+body[data-type="cosmogony"] .detail-tag {
+  background-color: #fff9d0;
+}
+
+body[data-type="anthropogony"] .dropdown-toggle,
+body[data-type="anthropogony"] .dropdown-menu,
+body[data-type="anthropogony"] .dropdown-item,
+body[data-type="anthropogony"] .myth-tag,
+body[data-type="anthropogony"] .detail-tag {
+  background-color: #d4b896;
+}
+
+body[data-type="eschatology"] .dropdown-toggle,
+body[data-type="eschatology"] .dropdown-menu,
+body[data-type="eschatology"] .dropdown-item,
+body[data-type="eschatology"] .myth-tag,
+body[data-type="eschatology"] .detail-tag {
+  background-color: #b3d9ff;
+}
+
+body[data-type="underworld"] .dropdown-toggle,
+body[data-type="underworld"] .dropdown-menu,
+body[data-type="underworld"] .dropdown-item,
+body[data-type="underworld"] .myth-tag,
+body[data-type="underworld"] .detail-tag {
+  background-color: #d3d3d3;
 }
 
 /* Global select styling to override native gray appearance */

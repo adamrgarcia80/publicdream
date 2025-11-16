@@ -27,7 +27,7 @@
   <script src="myths.js"></script>
   <script src="wiki.js"></script>
   <script>
-    function renderMyth(myth, extract, imageUrl) {
+    function renderMyth(myth, extract, imageUrl, imageCaption) {
       // Build a base description from our curated summary
       const summarySentences = myth.summary
         ? myth.summary.split(/[.!?]+/).filter(s => s.trim().length > 0)
@@ -79,17 +79,15 @@
             <a href="${wikipediaUrl}" target="_blank" rel="noopener noreferrer">
               <img src="${imageUrl}" alt="${myth.title}" class="myth-image">
             </a>
-            <p class="myth-image-caption">
-              <a href="${wikipediaUrl}" target="_blank" rel="noopener noreferrer" class="body-link">
-                Image from the Wikipedia article on ${myth.wikipediaTitle}
-              </a>
-            </p>
+            ${imageCaption ? `
+              <p class="myth-image-caption">${imageCaption}</p>
+            ` : ''}
           ` : ''}
         </section>
 
         ${relatedMyths.length > 0 ? `
           <section class="related-section">
-            <h2 class="related-title">Related Dreams</h2>
+            <h2 class="related-title">Related Myths</h2>
             <div class="related-grid">
               ${relatedMyths.map(related => `
                 <a href="detail.html?slug=${related.slug}" class="related-card">
@@ -144,14 +142,20 @@
         }
       });
 
+      // Set body background based on myth type
+      if (myth.type) {
+        document.body.setAttribute('data-type', myth.type);
+      }
+
       // Render immediately with myth data (don't wait for Wikipedia)
-      renderMyth(myth, null, null);
+      renderMyth(myth, null, null, null);
 
       // Fetch Wikipedia extract (with image) in the background and update when ready
       // Try to get more comprehensive content plus a lead image
       getWikipediaExtractWithImage(myth.wikipediaTitle).then(result => {
         let extract = result?.extract || null;
         let imageUrl = result?.imageUrl || null;
+        let imageCaption = result?.imageCaption || null;
 
         // If no image from main page, try culture mythology page as fallback
         if (!imageUrl && myth.culture) {
@@ -159,13 +163,14 @@
           getWikipediaExtractWithImage(culturePage).then(cultureResult => {
             if (cultureResult?.imageUrl) {
               imageUrl = cultureResult.imageUrl;
-              renderMyth(myth, extract, imageUrl);
+              imageCaption = cultureResult.imageCaption || null;
+              renderMyth(myth, extract, imageUrl, imageCaption);
             }
           }).catch(() => {});
         }
 
         if (extract || imageUrl) {
-          renderMyth(myth, extract, imageUrl);
+          renderMyth(myth, extract, imageUrl, imageCaption);
         }
 
         // Also try to fetch related content if available (e.g., culture mythology page)
@@ -174,7 +179,7 @@
           getWikipediaExtract(culturePage).then(cultureExtract => {
             if (cultureExtract && extract) {
               const combined = extract + '\n\n' + cultureExtract.substring(0, 1000);
-              renderMyth(myth, combined, imageUrl);
+              renderMyth(myth, combined, imageUrl, imageCaption);
             }
           }).catch(() => {
             // Silently fail if culture page doesn't exist

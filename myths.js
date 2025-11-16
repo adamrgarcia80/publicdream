@@ -330,6 +330,17 @@ const myths = [
     themes: ['cold', 'abandonment', 'spirits', 'decline', 'end times'],
   },
   {
+    id: '43',
+    slug: 'inuit-underworld',
+    title: 'Adlivun',
+    culture: 'Inuit',
+    type: 'underworld',
+    wikipediaTitle: 'Sedna (mythology)',
+    era: 'Pre-colonial',
+    summary: 'Adlivun is the underworld realm of the Inuit, ruled by Sedna, the sea goddess. Located beneath the sea or in the depths of the earth, it is where the souls of the dead dwell. Sedna, who was transformed into a sea goddess after being cast into the ocean, controls all sea creatures and watches over the dead. Shamans must journey to Adlivun to appease Sedna when she withholds animals from hunters, combing her hair and calming her anger to restore the balance between humans and the spirit world.',
+    themes: ['Sedna', 'underworld', 'sea goddess', 'shamans', 'afterlife'],
+  },
+  {
     id: '31',
     slug: 'greek-cosmogony',
     title: 'Greek Cosmogony',

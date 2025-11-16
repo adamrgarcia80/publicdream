@@ -172,6 +172,13 @@
         return matchesCulture && matchesType;
       });
 
+      // Set body background based on type filter
+      if (selectedType) {
+        document.body.setAttribute('data-type', selectedType);
+      } else {
+        document.body.removeAttribute('data-type');
+      }
+
       renderMyths();
     }
 
@@ -225,6 +232,11 @@
 
     // Initial render
     filterMyths();
+    
+    // Set initial type background if URL param exists
+    if (selectedType) {
+      document.body.setAttribute('data-type', selectedType);
+    }
   </script>
 </body>
 </html>
