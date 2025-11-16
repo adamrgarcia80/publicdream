@@ -472,6 +472,17 @@ const myths = [
     summary: 'In some strands of Chinese thought, the end of an age comes when cycles of virtue and order decay into corruption, and the Mandate of Heaven is withdrawn. Cosmic patterns unwind, the world returns toward chaos, and only after this collapse can a new, harmonious era emerge.',
     themes: ['cosmic cycles', 'chaos', 'return', 'renewal', 'cycles'],
   },
+  {
+    id: '44',
+    slug: 'chinese-underworld',
+    title: 'Diyu',
+    culture: 'Chinese',
+    type: 'underworld',
+    wikipediaTitle: 'Diyu',
+    era: 'Classical',
+    summary: 'Diyu is the realm of the dead in Chinese mythology, a complex underworld with multiple levels and courts where souls are judged by Yama, the king of hell. The dead face trials based on their deeds in life, and may be punished, purified, or reincarnated. Diyu contains eighteen levels of hell, each designed for specific sins, and souls may pass through these levels before being reborn or reaching paradise.',
+    themes: ['Yama', 'judgment', 'eighteen levels', 'punishment', 'reincarnation'],
+  },
 ];
 
 function getMythBySlug(slug) {
