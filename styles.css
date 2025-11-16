@@ -269,53 +269,59 @@ h1, h2, h3, h4, h5, h6 {
 .dropdown-toggle:hover {
   background-color: #000000;
   color: inherit;
-  border-color: inherit;
+  border-color: #000000;
 }
 
 body[data-type="cosmogony"] .dropdown-toggle:hover {
   color: #ffff00;
-  border-color: #ffff00;
 }
 
 body[data-type="anthropogony"] .dropdown-toggle:hover {
   color: #d4b896;
-  border-color: #d4b896;
 }
 
 body[data-type="eschatology"] .dropdown-toggle:hover {
   color: #ff0000;
-  border-color: #ff0000;
 }
 
 body[data-type="underworld"] .dropdown-toggle:hover {
   color: #888888;
-  border-color: #888888;
 }
 
 body:not([data-type]) .dropdown-toggle:hover {
   color: #ffffff;
-  border-color: #ffffff;
+}
+
+.dropdown.open .dropdown-toggle {
+  background-color: #000000;
+  color: inherit;
+  border-color: #000000 !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body[data-type="cosmogony"] .dropdown.open .dropdown-toggle {
-  border-color: #ffff00;
+  color: #ffff00;
+  border-color: #000000 !important;
 }
 
 body[data-type="anthropogony"] .dropdown.open .dropdown-toggle {
-  border-color: #d4b896;
+  color: #d4b896;
+  border-color: #000000 !important;
 }
 
 body[data-type="eschatology"] .dropdown.open .dropdown-toggle {
-  border-color: #ff0000;
+  color: #ff0000;
+  border-color: #000000 !important;
 }
 
 body[data-type="underworld"] .dropdown.open .dropdown-toggle {
-  border-color: #888888;
+  color: #888888;
+  border-color: #000000 !important;
 }
 
 body:not([data-type]) .dropdown.open .dropdown-toggle {
   color: #ffffff;
-  border-color: #ffffff;
+  border-color: #000000 !important;
 }
 
 .dropdown-toggle::after {
@@ -455,56 +461,55 @@ body[data-type="underworld"] .dropdown-item:hover {
 
 .myth-card:hover {
   background-color: #000000;
-  border-color: inherit;
+  border-color: #000000;
 }
 
 .myth-card:hover * {
   color: inherit;
-  border-color: inherit;
-}
-
-body[data-type="cosmogony"] .myth-card:hover {
-  border-color: #ffff00;
 }
 
 body[data-type="cosmogony"] .myth-card:hover * {
   color: #ffff00;
-  border-color: #ffff00;
 }
 
-body[data-type="anthropogony"] .myth-card:hover {
-  border-color: #d4b896;
+body[data-type="cosmogony"] .myth-card:hover .myth-tag,
+body[data-type="cosmogony"] .myth-card:hover .myth-theme {
+  border-color: #ffff00;
 }
 
 body[data-type="anthropogony"] .myth-card:hover * {
   color: #d4b896;
-  border-color: #d4b896;
 }
 
-body[data-type="eschatology"] .myth-card:hover {
-  border-color: #ff0000;
+body[data-type="anthropogony"] .myth-card:hover .myth-tag,
+body[data-type="anthropogony"] .myth-card:hover .myth-theme {
+  border-color: #d4b896;
 }
 
 body[data-type="eschatology"] .myth-card:hover * {
   color: #ff0000;
-  border-color: #ff0000;
 }
 
-body[data-type="underworld"] .myth-card:hover {
-  border-color: #888888;
+body[data-type="eschatology"] .myth-card:hover .myth-tag,
+body[data-type="eschatology"] .myth-card:hover .myth-theme {
+  border-color: #ff0000;
 }
 
 body[data-type="underworld"] .myth-card:hover * {
   color: #888888;
-  border-color: #888888;
 }
 
-body:not([data-type]) .myth-card:hover {
-  border-color: #ffffff;
+body[data-type="underworld"] .myth-card:hover .myth-tag,
+body[data-type="underworld"] .myth-card:hover .myth-theme {
+  border-color: #888888;
 }
 
 body:not([data-type]) .myth-card:hover * {
   color: #ffffff;
+}
+
+body:not([data-type]) .myth-card:hover .myth-tag,
+body:not([data-type]) .myth-card:hover .myth-theme {
   border-color: #ffffff;
 }
 
@@ -774,57 +779,31 @@ body:not([data-type]) .myth-tag:hover {
 
 .related-card:hover {
   background-color: #000000;
-  border-color: inherit;
+  border-color: #000000;
 }
 
 .related-card:hover * {
   color: inherit;
-  border-color: inherit;
-}
-
-body[data-type="cosmogony"] .related-card:hover {
-  border-color: #ffff00;
 }
 
 body[data-type="cosmogony"] .related-card:hover * {
   color: #ffff00;
-  border-color: #ffff00;
-}
-
-body[data-type="anthropogony"] .related-card:hover {
-  border-color: #d4b896;
 }
 
 body[data-type="anthropogony"] .related-card:hover * {
   color: #d4b896;
-  border-color: #d4b896;
-}
-
-body[data-type="eschatology"] .related-card:hover {
-  border-color: #ff0000;
 }
 
 body[data-type="eschatology"] .related-card:hover * {
   color: #ff0000;
-  border-color: #ff0000;
-}
-
-body[data-type="underworld"] .related-card:hover {
-  border-color: #888888;
 }
 
 body[data-type="underworld"] .related-card:hover * {
   color: #888888;
-  border-color: #888888;
-}
-
-body:not([data-type]) .related-card:hover {
-  border-color: #ffffff;
 }
 
 body:not([data-type]) .related-card:hover * {
   color: #ffffff;
-  border-color: #ffffff;
 }
 
 .related-card-title {
@@ -944,32 +923,27 @@ body:not([data-type]) .related-card:hover * {
 .symbol-map-link:hover {
   background-color: #000000;
   color: inherit;
-  border-color: inherit;
+  border-color: #000000;
 }
 
 body[data-type="cosmogony"] .symbol-map-link:hover {
   color: #ffff00;
-  border-color: #ffff00;
 }
 
 body[data-type="anthropogony"] .symbol-map-link:hover {
   color: #d4b896;
-  border-color: #d4b896;
 }
 
 body[data-type="eschatology"] .symbol-map-link:hover {
   color: #ff0000;
-  border-color: #ff0000;
 }
 
 body[data-type="underworld"] .symbol-map-link:hover {
   color: #888888;
-  border-color: #888888;
 }
 
 body:not([data-type]) .symbol-map-link:hover {
   color: #ffffff;
-  border-color: #ffffff;
 }
 
 /* Symbol Map Page Styles */
