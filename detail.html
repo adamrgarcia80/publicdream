@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myth Detail</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <a href="myths.html" class="back-link">← Back to myths</a>
+
+    <article class="detail-article" id="mythDetail">
+      <div class="loading">Loading...</div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      PUBLIC DREAM WORLD is a project by
+      <a href="https://adamrgarcia.studio" target="_blank" rel="noopener noreferrer" class="body-link">Adam R Garcia</a>.
+      All information and imagery pulled from Wikipedia, which means it's probably not all correct, but a good place to think
+      about how we create myths through time, and how they create us in return. "Myth is the public dream and dream is the private myth." —Joseph Campbell
+    </p>
+  </footer>
+
+  <script src="myths.js"></script>
+  <script src="wiki.js"></script>
+  <script>
+    function renderMyth(myth, extract, imageUrl) {
+      // Build a base description from our curated summary
+      const summarySentences = myth.summary
+        ? myth.summary.split(/[.!?]+/).filter(s => s.trim().length > 0)
+        : [];
+      const baseDescription = myth.summary || '';
+
+      // Add extra context from Wikipedia extract to ensure rich descriptions
+      const extractText = extract || '';
+      const extractSentences = extractText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      // Take up to 5 sentences from extract for richer content
+      const extraSentences = extractSentences.slice(0, 5);
+      const extraText = extraSentences.length > 0
+        ? extraSentences.map(s => s.trim()).join('. ') + '.'
+        : '';
+
+      const description = extraText
+        ? [baseDescription, extraText].filter(Boolean).join(' ')
+        : baseDescription;
+
+      // Get related myths
+      const relatedMyths = getRelatedMyths(myth);
+
+      // Wikipedia article URL used for image click-through and caption
+      const wikipediaUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(myth.wikipediaTitle)}`;
+
+      // Render the detail page
+      document.getElementById('mythDetail').innerHTML = `
+        <header class="detail-header">
+          <h1 class="detail-title">${myth.title}</h1>
+          <div class="detail-meta">
+            <button class="detail-tag detail-tag-button" data-culture="${myth.culture}">${myth.culture}</button>
+            <button class="detail-tag detail-tag-button" data-type="${myth.type}">${myth.type}</button>
+          </div>
+          ${myth.themes.length > 0 ? `
+            <div class="detail-themes">
+              ${myth.themes.map(theme => `
+                <span class="detail-theme">${theme}</span>
+              `).join('')}
+            </div>
+          ` : ''}
+        </header>
+
+        <section class="detail-section">
+          <h2 class="detail-section-title">Description</h2>
+          <div class="detail-section-content">
+            ${description}
+          </div>
+          ${imageUrl ? `
+            <a href="${wikipediaUrl}" target="_blank" rel="noopener noreferrer">
+              <img src="${imageUrl}" alt="${myth.title}" class="myth-image">
+            </a>
+            <p class="myth-image-caption">
+              <a href="${wikipediaUrl}" target="_blank" rel="noopener noreferrer" class="body-link">
+                Image from the Wikipedia article on ${myth.wikipediaTitle}
+              </a>
+            </p>
+          ` : ''}
+        </section>
+
+        ${relatedMyths.length > 0 ? `
+          <section class="related-section">
+            <h2 class="related-title">Related Dreams</h2>
+            <div class="related-grid">
+              ${relatedMyths.map(related => `
+                <a href="detail.html?slug=${related.slug}" class="related-card">
+                  <h3 class="related-card-title">${related.title}</h3>
+                  <div class="related-card-meta">
+                    <span>${related.culture}</span>
+                    <span>•</span>
+                    <span>${related.type}</span>
+                  </div>
+                  <p class="related-card-summary">${related.summary}</p>
+                </a>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        <section class="source-section">
+          <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(myth.wikipediaTitle)}" target="_blank" rel="noopener noreferrer" class="source-link">Source: Wikipedia</a>
+        </section>
+      `;
+
+      // Update page title
+      document.title = myth.title;
+    }
+
+    async function loadMythDetail() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+
+      if (!slug) {
+        document.getElementById('mythDetail').innerHTML = '<div class="empty-state">Myth not found</div>';
+        return;
+      }
+
+      const myth = getMythBySlug(slug);
+
+      if (!myth) {
+        document.getElementById('mythDetail').innerHTML = '<div class="empty-state">Myth not found</div>';
+        return;
+      }
+
+      // Make metadata tags clickable to cross-reference back to myths list
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList && target.classList.contains('detail-tag-button')) {
+          if (target.dataset.culture) {
+            window.location.href = `myths.html?culture=${encodeURIComponent(target.dataset.culture)}`;
+          }
+          if (target.dataset.type) {
+            window.location.href = `myths.html?type=${encodeURIComponent(target.dataset.type)}`;
+          }
+        }
+      });
+
+      // Render immediately with myth data (don't wait for Wikipedia)
+      renderMyth(myth, null, null);
+
+      // Fetch Wikipedia extract (with image) in the background and update when ready
+      // Try to get more comprehensive content plus a lead image
+      getWikipediaExtractWithImage(myth.wikipediaTitle).then(result => {
+        let extract = result?.extract || null;
+        let imageUrl = result?.imageUrl || null;
+
+        // If no image from main page, try culture mythology page as fallback
+        if (!imageUrl && myth.culture) {
+          const culturePage = `${myth.culture} mythology`;
+          getWikipediaExtractWithImage(culturePage).then(cultureResult => {
+            if (cultureResult?.imageUrl) {
+              imageUrl = cultureResult.imageUrl;
+              renderMyth(myth, extract, imageUrl);
+            }
+          }).catch(() => {});
+        }
+
+        if (extract || imageUrl) {
+          renderMyth(myth, extract, imageUrl);
+        }
+
+        // Also try to fetch related content if available (e.g., culture mythology page)
+        if (myth.culture && extract) {
+          const culturePage = `${myth.culture} mythology`;
+          getWikipediaExtract(culturePage).then(cultureExtract => {
+            if (cultureExtract && extract) {
+              const combined = extract + '\n\n' + cultureExtract.substring(0, 1000);
+              renderMyth(myth, combined, imageUrl);
+            }
+          }).catch(() => {
+            // Silently fail if culture page doesn't exist
+          });
+        }
+      });
+    }
+
+    loadMythDetail();
+  </script>
+</body>
+</html>
+
