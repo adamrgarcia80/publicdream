@@ -123,6 +123,12 @@ async function getWikipediaExtractWithImage(wikipediaTitle) {
                 .replace(/uploaded\s+at\s+\d{2}:\d{2}/gi, '')
                 .replace(/\s+/g, ' ') // Normalize whitespace
                 .trim();
+              
+              // Limit caption to 1-2 sentences
+              const sentences = imageCaption.split(/[.!?]+/).filter(s => s.trim().length > 0);
+              if (sentences.length > 2) {
+                imageCaption = sentences.slice(0, 2).map(s => s.trim()).join('. ') + '.';
+              }
             }
           }
         }

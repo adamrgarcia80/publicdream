@@ -451,6 +451,17 @@ const myths = [
     themes: ['flood', 'divine wrath', 'destruction', 'judgment', 'cosmic'],
   },
   {
+    id: '46',
+    slug: 'mesopotamian-underworld',
+    title: 'Mesopotamian Underworld',
+    culture: 'Mesopotamian',
+    type: 'underworld',
+    wikipediaTitle: 'Ancient Mesopotamian underworld',
+    era: 'Ancient',
+    summary: 'The Mesopotamian underworld, known as Irkalla or Kur, is a dark and gloomy realm ruled by Ereshkigal, the goddess of death. Located beneath the earth, it is a place where the dead exist in a shadowy state, eating dust and clay. The underworld is guarded by gates and demons, and souls must cross a river to reach it. Unlike some traditions, there is no judgment or reward—all the dead, regardless of their deeds in life, share the same bleak existence in this realm of eternal darkness.',
+    themes: ['Irkalla', 'Kur', 'Ereshkigal', 'darkness', 'demons'],
+  },
+  {
     id: '40',
     slug: 'chinese-cosmogony',
     title: 'Chinese Cosmogony',
