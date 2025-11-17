@@ -73,8 +73,8 @@ async function getWikipediaExtractWithImage(wikipediaTitle) {
         // Remove size prefix (e.g., "600px-")
         const cleanFilename = filenameWithSize.replace(/^\d+px-/, '');
         
-        // Query the File page for image metadata
-        const imageInfoUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=File:${encodeURIComponent(cleanFilename)}&prop=imageinfo&iiprop=extmetadata|comment&format=json&origin=*`;
+        // Query the File page for image metadata with more fields
+        const imageInfoUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=File:${encodeURIComponent(cleanFilename)}&prop=imageinfo&iiprop=extmetadata|comment|url&format=json&origin=*`;
         
         const imageResponse = await fetch(imageInfoUrl, {
           headers: {
@@ -90,28 +90,41 @@ async function getWikipediaExtractWithImage(wikipediaTitle) {
             const imgPage = imagePages[imgPageId];
             const imageInfo = imgPage?.imageinfo?.[0];
             
-            // Try ImageDescription first
+            // Try ImageDescription first (most descriptive)
             if (imageInfo?.extmetadata?.['ImageDescription']?.value) {
               imageCaption = imageInfo.extmetadata['ImageDescription'].value;
             }
-            // Fallback to ObjectName if ImageDescription not available
+            // Try ObjectName (often more specific)
             else if (imageInfo?.extmetadata?.['ObjectName']?.value) {
               imageCaption = imageInfo.extmetadata['ObjectName'].value;
             }
-            // Fallback to comment if available
-            else if (imageInfo?.comment) {
+            // Try ShortDescription if available
+            else if (imageInfo?.extmetadata?.['ShortDescription']?.value) {
+              imageCaption = imageInfo.extmetadata['ShortDescription'].value;
+            }
+            // Try Artist if it's an artwork
+            else if (imageInfo?.extmetadata?.['Artist']?.value && imageInfo?.extmetadata?.['Title']?.value) {
+              imageCaption = `${imageInfo.extmetadata['Title'].value} by ${imageInfo.extmetadata['Artist'].value}`;
+            }
+            // Fallback to comment if available (but usually less descriptive)
+            else if (imageInfo?.comment && imageInfo.comment.length > 20) {
               imageCaption = imageInfo.comment;
             }
             
             // Clean up the caption
             if (imageCaption) {
               imageCaption = imageCaption
+                // Remove HTML tags
                 .replace(/<[^>]*>/g, '')
+                // Decode HTML entities
                 .replace(/&quot;/g, '"')
                 .replace(/&#39;/g, "'")
                 .replace(/&amp;/g, '&')
                 .replace(/&lt;/g, '<')
                 .replace(/&gt;/g, '>')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&mdash;/g, '—')
+                .replace(/&ndash;/g, '–')
                 // Remove "uploaded" dates and related text
                 .replace(/uploaded\s+on\s+\d{1,2}\s+\w+\s+\d{4}/gi, '')
                 .replace(/uploaded\s+\d{1,2}\s+\w+\s+\d{4}/gi, '')
@@ -121,13 +134,51 @@ async function getWikipediaExtractWithImage(wikipediaTitle) {
                 .replace(/\[uploaded[^\]]+\]/gi, '')
                 .replace(/uploaded\s+by\s+[^,]+/gi, '')
                 .replace(/uploaded\s+at\s+\d{2}:\d{2}/gi, '')
-                .replace(/\s+/g, ' ') // Normalize whitespace
+                // Remove Wikipedia template artifacts
+                .replace(/\{\{[^}]+\}\}/g, '')
+                .replace(/\[\[([^\]]+)\]\]/g, '$1') // Convert [[link]] to just text
+                .replace(/\[\[([^\|]+)\|([^\]]+)\]\]/g, '$2') // Convert [[link|text]] to just text
+                // Remove file size and technical metadata
+                .replace(/\([0-9,]+\s*(?:×|x)\s*[0-9,]+\s*pixels?\)/gi, '')
+                .replace(/\([0-9.]+\s*(?:MB|KB|bytes?)\)/gi, '')
+                .replace(/File:[^\s]+/gi, '')
+                .replace(/Image:[^\s]+/gi, '')
+                // Remove common technical prefixes
+                .replace(/^(?:This\s+)?(?:image|photo|picture|illustration|depiction|representation|statue|sculpture|painting|drawing|engraving|relief|mosaic|fresco|carving|artifact|object)\s*(?:of|showing|depicting|representing)?\s*/i, '')
+                // Remove redundant phrases
+                .replace(/\b(?:see\s+also|see|more\s+info|for\s+more|additional\s+information).*$/i, '')
+                .replace(/\b(?:source|credit|attribution|license|copyright).*$/i, '')
+                // Fix common spacing issues
+                .replace(/\s+/g, ' ')
+                .replace(/\s*\.\s*\./g, '.')
+                .replace(/\s*,\s*,/g, ',')
+                // Remove leading/trailing punctuation issues
+                .replace(/^[,\s\.\-:;]+/, '')
+                .replace(/[,\s\.\-:;]+$/, '')
+                // Capitalize first letter
                 .trim();
               
-              // Limit caption to 1-2 sentences
-              const sentences = imageCaption.split(/[.!?]+/).filter(s => s.trim().length > 0);
-              if (sentences.length > 2) {
-                imageCaption = sentences.slice(0, 2).map(s => s.trim()).join('. ') + '.';
+              if (imageCaption && imageCaption.length > 0) {
+                imageCaption = imageCaption.charAt(0).toUpperCase() + imageCaption.slice(1);
+                
+                // Limit caption to 1-2 sentences, but ensure it's meaningful
+                const sentences = imageCaption.split(/[.!?]+/).filter(s => s.trim().length > 10); // Only sentences with at least 10 chars
+                if (sentences.length > 2) {
+                  imageCaption = sentences.slice(0, 2).map(s => s.trim()).join('. ') + '.';
+                } else if (sentences.length > 0) {
+                  // Ensure it ends with proper punctuation
+                  imageCaption = sentences.map(s => s.trim()).join('. ');
+                  if (!imageCaption.match(/[.!?]$/)) {
+                    imageCaption += '.';
+                  }
+                }
+                
+                // Final cleanup - remove if too short or meaningless
+                if (imageCaption.length < 15 || /^(?:image|photo|picture|file|upload)/i.test(imageCaption)) {
+                  imageCaption = null;
+                }
+              } else {
+                imageCaption = null;
               }
             }
           }
