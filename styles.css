@@ -614,6 +614,11 @@ body:not([data-type]) .myth-tag:hover {
   transition: all 0.3s ease;
 }
 
+.detail-article ~ .back-link {
+  margin-top: 3rem;
+  margin-bottom: 0;
+}
+
 .back-link:hover {
   text-decoration: underline;
 }
