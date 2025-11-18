@@ -81,6 +81,12 @@
       // Wikipedia article URL used for image click-through and caption
       const wikipediaUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(myth.wikipediaTitle)}`;
 
+      // Custom image caption for specific myths
+      let finalImageCaption = imageCaption;
+      if (myth.slug === 'christian-underworld' && imageUrl) {
+        finalImageCaption = "A detail from Hieronymus Bosch's depiction of Hell (16th century).";
+      }
+
       // Render the detail page
       document.getElementById('mythDetail').innerHTML = `
         <header class="detail-header">
@@ -107,7 +113,7 @@
             <a href="${wikipediaUrl}" target="_blank" rel="noopener noreferrer">
               <img src="${imageUrl}" alt="${myth.title}" class="myth-image">
             </a>
-            <p class="myth-image-caption">${imageCaption || `Image from the Wikipedia article on ${myth.wikipediaTitle}`}</p>
+            <p class="myth-image-caption">${finalImageCaption || `Image from the Wikipedia article on ${myth.wikipediaTitle}`}</p>
           ` : ''}
         </section>
 
