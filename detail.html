@@ -55,9 +55,25 @@
         ? extraSentences.map(s => s.trim()).join('. ') + '.'
         : '';
 
-      const description = extraText
+      let description = extraText
         ? [baseDescription, extraText].filter(Boolean).join(' ')
         : baseDescription;
+
+      // Clean up incomplete text patterns from Wikipedia extracts
+      description = description
+        // Remove incomplete parenthetical expressions like "(i. e", "(e. g", etc.
+        .replace(/\(i\.\s*e\s*$/i, '')
+        .replace(/\(e\.\s*g\s*$/i, '')
+        .replace(/\([^)]*$/g, '') // Remove any incomplete parentheses at the end
+        // Remove incomplete abbreviations at the end
+        .replace(/\s+[a-z]\.\s*$/i, '')
+        // Clean up trailing whitespace and punctuation issues
+        .trim()
+        .replace(/\s+\.$/, '.') // Fix " ." to "."
+        .replace(/\s+,\s*$/, '') // Remove trailing comma
+        .replace(/\s+$/g, '') // Remove trailing whitespace
+        // Ensure it ends with a period
+        .replace(/[.!?]*$/, '') + '.';
 
       // Get related myths
       const relatedMyths = getRelatedMyths(myth);
