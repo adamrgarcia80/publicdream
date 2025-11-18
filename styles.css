@@ -857,6 +857,24 @@ body:not([data-type]) .related-card:hover * {
   text-decoration-thickness: 2px;
 }
 
+.source-caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #000000;
+  margin-left: 0.5rem;
+}
+
+.source-caption-link {
+  color: #000000;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.source-caption-link:hover {
+  text-decoration-thickness: 2px;
+}
+
 .myth-image {
   display: block;
   margin-top: 2rem;

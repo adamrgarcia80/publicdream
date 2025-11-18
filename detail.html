@@ -23,9 +23,9 @@
     <article class="detail-article" id="mythDetail">
       <div class="loading">Loading...</div>
     </article>
-  </main>
 
-  <a href="myths.html" class="back-link">← Back to myths</a>
+    <a href="myths.html" class="back-link">← Back to myths</a>
+  </main>
 
   <footer class="site-footer">
     <p>
@@ -85,7 +85,7 @@
         <section class="detail-section">
           <h2 class="detail-section-title">Description</h2>
           <div class="detail-section-content">
-            ${description}
+            ${description} <span class="source-caption"><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(myth.wikipediaTitle)}" target="_blank" rel="noopener noreferrer" class="source-caption-link">Source</a></span>
           </div>
           ${imageUrl ? `
             <a href="${wikipediaUrl}" target="_blank" rel="noopener noreferrer">
@@ -113,10 +113,6 @@
             </div>
           </section>
         ` : ''}
-
-        <section class="source-section">
-          <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(myth.wikipediaTitle)}" target="_blank" rel="noopener noreferrer" class="source-link">Source: Wikipedia</a>
-        </section>
       `;
 
       // Update page title
