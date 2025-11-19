@@ -96,10 +96,34 @@
         finalImageCaption = "The Fall of Man by Peter Paul Rubens, 1628–29.";
       }
       if (myth.slug === 'izkali' && imageUrl) {
+        finalImageCaption = "The Aztec Sun Stone, currently displayed at the National Anthropology Museum in Mexico City. Basalt, created sometime between 1502 and 1520.";
+      }
+      if (myth.slug === 'aztec-anthropogony' && imageUrl) {
         finalImageCaption = "Mictlantecuhtli (left), god of death, the lord of the Underworld and Quetzalcoatl (right), god of wisdom, life, knowledge, morning star, patron of the winds and light, the lord of the West. Together they symbolize life and death.";
       }
       if (myth.slug === 'aztec-cosmogony' && imageUrl) {
         finalImageCaption = "The Aztec Sun Stone, currently displayed at the National Anthropology Museum in Mexico City. Basalt, created sometime between 1502 and 1520.";
+      }
+      if (myth.slug === 'chinese-eschatology' && imageUrl) {
+        finalImageCaption = "Nine Dragons, handscroll section, by Chen Rong, AD 1244, Song dynasty, Museum of Fine Arts, Boston.";
+      }
+      if (myth.slug === 'anubis-underworld' && imageUrl) {
+        finalImageCaption = "The 'Weighing of the Heart' from the Book of the Dead from the Papyrus of Hunefer, dated to the 19th Dynasty around 1275 BCE. The deceased Hunefer is taken into the judgment hall by the deity Anubis, who weighs a portion of Hunefer's soul, represented by his heart. This ritual is completed with Ammit the Devourer awaiting the result. Next, the triumphant Hunefer, having passed the test, is presented by the falcon-headed Horus to Osiris, seated in his shrine with Isis, Nephthys and the four sons of Horus.";
+      }
+      if (myth.slug === 'egyptian-anthropogony' && imageUrl) {
+        finalImageCaption = "The Egyptian god Khnum was usually depicted with the head of a ram.";
+      }
+      if (myth.slug === 'greek-cosmogony' && imageUrl) {
+        finalImageCaption = "Chaos painting by George Frederic Watts.";
+      }
+      if (myth.slug === 'greek-anthropogony' && imageUrl) {
+        finalImageCaption = "Prometheus tortured by the eagle (black-figure kylix, 560-550 BC, Vatican Museums).";
+      }
+      if (myth.slug === 'greek-eschatology' && imageUrl) {
+        finalImageCaption = "Zeus holding a thunderbolt. Zeus de Smyrne, discovered in Smyrna in 1680.";
+      }
+      if (myth.slug === 'greek-underworld' && imageUrl) {
+        finalImageCaption = "Hades (Pluton) depicted sitting on the left holding a bident in his left hand, next to Persephone (Proserpina), with Cerberus (Kerberos).";
       }
 
       // Render the detail page
@@ -200,8 +224,57 @@
         let imageUrl = result?.imageUrl || null;
         let imageCaption = result?.imageCaption || null;
 
-        // If no image from main page, try culture mythology page as fallback
-        if (!imageUrl && myth.culture) {
+        // Custom image URL for Greek Underworld
+        if (myth.slug === 'greek-underworld') {
+          // Fetch the specific image "Aidoneus_&_Persephone.png" from Wikimedia Commons
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=File:Aidoneus_%26_Persephone.png&prop=imageinfo&iiprop=url&iiurlwidth=600&format=json&origin=*`)
+            .then(response => response.json())
+            .then(data => {
+              const pages = data.query?.pages;
+              if (pages) {
+                const pageId = Object.keys(pages)[0];
+                const page = pages[pageId];
+                const fileUrl = page?.imageinfo?.[0]?.thumburl || page?.imageinfo?.[0]?.url;
+                if (fileUrl) {
+                  imageUrl = fileUrl;
+                  renderMyth(myth, extract, imageUrl, imageCaption);
+                }
+              }
+            })
+            .catch(() => {
+              // Fallback to default image if fetch fails
+            });
+          // Render with extract even if image hasn't loaded yet
+          if (extract) {
+            renderMyth(myth, extract, imageUrl, imageCaption);
+          }
+          // Skip culture mythology fallback for Greek Underworld since we're using a custom image
+        } else if (myth.slug === 'greek-cosmogony') {
+          // Fetch the specific Chaos painting image from Wikimedia Commons
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=File:Assistants_and_George_Frederic_Watts_-_Chaos_-_Google_Art_Project.jpg&prop=imageinfo&iiprop=url&iiurlwidth=600&format=json&origin=*`)
+            .then(response => response.json())
+            .then(data => {
+              const pages = data.query?.pages;
+              if (pages) {
+                const pageId = Object.keys(pages)[0];
+                const page = pages[pageId];
+                const fileUrl = page?.imageinfo?.[0]?.thumburl || page?.imageinfo?.[0]?.url;
+                if (fileUrl) {
+                  imageUrl = fileUrl;
+                  renderMyth(myth, extract, imageUrl, imageCaption);
+                }
+              }
+            })
+            .catch(() => {
+              // Fallback to default image if fetch fails
+            });
+          // Render with extract even if image hasn't loaded yet
+          if (extract) {
+            renderMyth(myth, extract, imageUrl, imageCaption);
+          }
+          // Skip culture mythology fallback for Greek Cosmogony since we're using a custom image
+        } else if (!imageUrl && myth.culture) {
+          // If no image from main page, try culture mythology page as fallback
           const culturePage = `${myth.culture} mythology`;
           getWikipediaExtractWithImage(culturePage).then(cultureResult => {
             if (cultureResult?.imageUrl) {
@@ -226,6 +299,28 @@
             }
           }).catch(() => {
             // Silently fail if culture page doesn't exist
+          });
+        }
+
+        // For Greek eschatology, also fetch content from Deucalion and Ages of Man pages
+        if (myth.slug === 'greek-eschatology') {
+          Promise.all([
+            getWikipediaExtract('Deucalion'),
+            getWikipediaExtract('Ages of Man')
+          ]).then(([deucalionExtract, agesExtract]) => {
+            let additionalContent = '';
+            if (deucalionExtract) {
+              additionalContent += '\n\n' + deucalionExtract.substring(0, 800);
+            }
+            if (agesExtract) {
+              additionalContent += '\n\n' + agesExtract.substring(0, 800);
+            }
+            if (additionalContent && extract) {
+              const combined = extract + additionalContent;
+              renderMyth(myth, combined, imageUrl, imageCaption);
+            }
+          }).catch(() => {
+            // Silently fail if related pages don't exist
           });
         }
       });

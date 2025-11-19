@@ -379,10 +379,10 @@ const myths = [
     title: 'Greek Eschatology',
     culture: 'Greek',
     type: 'eschatology',
-    wikipediaTitle: 'Greek mythology',
+    wikipediaTitle: 'Zeus',
     era: 'Classical',
-    summary: 'The end comes when Zeus decides to destroy humanity, as in the flood of Deucalion, or through cosmic upheaval.',
-    themes: ['Zeus', 'flood', 'Deucalion', 'destruction', 'judgment'],
+    summary: 'Greek eschatology encompasses the myth of the five ages of man, from the golden age to the current iron age of decline. When humanity becomes too corrupt, Zeus sends destruction, most famously the great flood that only Deucalion and Pyrrha survive. Zeus\'s judgment determines the end of ages, and cosmic upheaval marks the transition between epochs.',
+    themes: ['Zeus', 'flood', 'Deucalion', 'five ages', 'judgment', 'cosmic cycles'],
   },
   {
     id: '34',
