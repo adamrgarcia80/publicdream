@@ -83,6 +83,14 @@ h1, h2, h3, h4, h5, h6 {
   text-align: left;
 }
 
+.key-sentence .body-link {
+  text-decoration: underline;
+}
+
+.key-sentence .body-link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .key-sentence {
     font-size: 2rem;
@@ -921,10 +929,11 @@ body:not([data-type]) .related-card:hover * {
 
 .site-footer a {
   color: #000000;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .site-footer a:hover {
+  color: #000000;
   text-decoration: underline;
 }
 
